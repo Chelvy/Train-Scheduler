@@ -61,25 +61,49 @@
           minAway: tMinutesTillTrain
       });
 
-  });
 
+
+  });
 
 
 
   database.ref("/data").on("child_added", function(snapshot) {
-      console.log(snapshot.val());
-      console.log(snapshot.val().trainName);
-      console.log(snapshot.val().destination);
-      console.log(snapshot.val().frequency);
-      console.log(snapshot.val().nextArrival);
-      console.log(snapshot.val().minAway);
-      var newtr = $('<tr>');
-      newtr.append($('<td>').text(snapshot.val().trainName))
-          .append($('<td>').text(snapshot.val().destination))
-          .append($('<td>').text(snapshot.val().frequency))
-          .append($('<td>').text(snapshot.val().nextArrival))
-          .append($('<td>').text(snapshot.val().minAway))
-      newtr.appendTo($('#tbody'));
-  }, function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-  });
+          console.log(snapshot.val());
+          console.log(snapshot.val().trainName);
+          console.log(snapshot.val().destination);
+          console.log(snapshot.val().frequency);
+          console.log(snapshot.val().nextArrival);
+          console.log(snapshot.val().minAway);
+          var newUpdtBtn = $('<button type="update" class="btn btn-primary" id="update">Update</button>');
+
+          var newDltBtn = $('<button type="delete" class="btn btn-primary" id="delete">Delete</button>');
+          var newtr = $('<tr>');
+          newtr.append($('<td>').text(snapshot.val().trainName))
+              .append($('<td>').text(snapshot.val().destination))
+              .append($('<td>').text(snapshot.val().frequency))
+              .append($('<td>').text(snapshot.val().nextArrival))
+              .append($('<td>').text(snapshot.val().minAway))
+              .append($('<td>').html(newUpdtBtn))
+              .append($('<td>').html(newDltBtn))
+          newtr.appendTo($('#tbody'));
+          $('#tbody').on('click', '#delete', function() {
+              $(this).closest('tr').remove();
+          });
+          $('#tbody').on('click', '#update', function() {
+              var firstTimeConverted = moment(firstTrainTimeInput, "HH:mm").subtract(1, "years");
+              var currentTime = moment();
+              var diffTime = currentTime.diff(moment(firstTimeConverted), "minutes");
+              var tRemainder = diffTime % frequencyInput;
+              var tMinutesTillTrain = frequencyInput - tRemainder;
+              var nextTrainTime = currentTime.add(tMinutesTillTrain, "minutes");
+              database.ref("/data").set({
+                  nextArrival: moment(nextTrainTime).format("hh:mm"),
+                  minAway: tMinutesTillTrain
+              });
+              //   $(this).closest('tr').load(snapshot.val().nextArrival);
+              //   $(this).closest('tr').load(snapshot.val().minAway);
+          });
+      },
+      function(errorObject) {
+          console.log("The read failed: " + errorObject.code);
+      });
