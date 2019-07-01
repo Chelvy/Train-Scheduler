@@ -51,7 +51,7 @@
       console.log(destinationInput);
       console.log(firstTrainTimeInput);
       console.log(frequencyInput);
-      //   var totalBilled = parseInt(monthlyRateInput) * monthsWorked;
+
       database.ref("/data").push({
           trainName: trainNameInput,
           destination: destinationInput,
@@ -59,9 +59,6 @@
           firstTrainTime: firstTrainTimeInput,
           nextArrival: moment(nextTrainTime).format("hh:mm"),
           minAway: tMinutesTillTrain
-              //   monthsWorked: monthsWorked,
-
-          //   totalBilled: totalBilled
       });
 
   });
@@ -82,7 +79,6 @@
           .append($('<td>').text(snapshot.val().frequency))
           .append($('<td>').text(snapshot.val().nextArrival))
           .append($('<td>').text(snapshot.val().minAway))
-          //   .append($('<td style="text-align: right">').text(snapshot.val().totalBilled));
       newtr.appendTo($('#tbody'));
   }, function(errorObject) {
       console.log("The read failed: " + errorObject.code);

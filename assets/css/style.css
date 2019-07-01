@@ -1,0 +1,16 @@
+.jumbotron {
+    text-align: center;
+    background-color: rgb(102, 54, 32);
+    color: whitesmoke;
+}
+
+.card {
+    border-color: steelblue;
+}
+
+.card-header,
+.btn {
+    font-weight: bold;
+    color: white;
+    background-color: steelblue;
+}
