@@ -87,22 +87,25 @@
               .append($('<td>').html(newDltBtn))
           newtr.appendTo($('#tbody'));
           $('#tbody').on('click', '#delete', function() {
+              var adaRef = firebase.database().ref('/data');
+              //   adaRef.remove(this);
               $(this).closest('tr').remove();
+
           });
-          $('#tbody').on('click', '#update', function() {
-              var firstTimeConverted = moment(firstTrainTimeInput, "HH:mm").subtract(1, "years");
-              var currentTime = moment();
-              var diffTime = currentTime.diff(moment(firstTimeConverted), "minutes");
-              var tRemainder = diffTime % frequencyInput;
-              var tMinutesTillTrain = frequencyInput - tRemainder;
-              var nextTrainTime = currentTime.add(tMinutesTillTrain, "minutes");
-              database.ref("/data").set({
-                  nextArrival: moment(nextTrainTime).format("hh:mm"),
-                  minAway: tMinutesTillTrain
-              });
-              //   $(this).closest('tr').load(snapshot.val().nextArrival);
-              //   $(this).closest('tr').load(snapshot.val().minAway);
-          });
+          //   $('#tbody').on('click', '#update', function() {
+          //       var firstTimeConverted = moment(firstTrainTimeInput, "HH:mm").subtract(1, "years");
+          //       var currentTime = moment();
+          //       var diffTime = currentTime.diff(moment(firstTimeConverted), "minutes");
+          //       var tRemainder = diffTime % frequencyInput;
+          //       var tMinutesTillTrain = frequencyInput - tRemainder;
+          //       var nextTrainTime = currentTime.add(tMinutesTillTrain, "minutes");
+          //       database.ref("/data").set({
+          //           nextArrival: moment(nextTrainTime).format("hh:mm"),
+          //           minAway: tMinutesTillTrain
+          //       });
+          //       $(this).closest('tr').load(snapshot.val().nextArrival);
+          //       $(this).closest('tr').load(snapshot.val().minAway);
+          //   });
       },
       function(errorObject) {
           console.log("The read failed: " + errorObject.code);
